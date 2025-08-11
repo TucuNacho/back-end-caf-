@@ -24,7 +24,7 @@ export default class Server {
   listen() {
     this.app.listen(this.port, () => {
       console.info(
-        `El servidor se esta ejecutando en el puerto: http://localhost:${this.port}`
+        `El servidor se esta ejecutando en el puerto : http://localhost:${this.port}`
       );
     });
   }
