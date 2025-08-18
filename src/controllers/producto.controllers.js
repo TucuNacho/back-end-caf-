@@ -4,7 +4,18 @@ export const test = (req, res) => {
   res.send("Primera prueba desde el backend");
 };
 
-export const leerProducto = (req, res) => {};
+export const leerProducto = async(req, res) =>{
+  try {
+    // buscar todos los productos en la base de datos
+    const listaProductos = await Producto.find()
+    // enviar la respuesta al front
+    res.status(200).json(listaProductos)
+
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({mensaje:"Error al leer los productos"})
+  }
+};
 //agregar funcion para crear productos
 export const crearProducto = async (req, res) => {
   try {
