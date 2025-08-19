@@ -34,32 +34,47 @@ export const leerProductoPorId = async (req, res) => {
   try {
     //1-obtener producto del request
     //2-pedir a mongoose que encuentre el producto con tal id
-   const productoBuscado= await Producto.findById(req.params.id)
-   if(!productoBuscado){
-    return res.status(404).json({mensaje:"Producto no encontrado"})
-   }
+    const productoBuscado = await Producto.findById(req.params.id);
+    if (!productoBuscado) {
+      return res.status(404).json({ mensaje: "Producto no encontrado" });
+    }
     //3-contestar al front
-    res.status(200).json(productoBuscado)
+    res.status(200).json(productoBuscado);
   } catch (error) {
-    console.error(error)
-    res.status(500).json({mensaje:"Error al obtener producto"})
+    console.error(error);
+    res.status(500).json({ mensaje: "Error al obtener producto" });
   }
 };
-export const borrarProducto = async (req, res) =>{
+export const borrarProducto = async (req, res) => {
   try {
     //1- buscar al producto por id y luego borrar
-    const productoEliminado = await Producto.findByIdAndDelete(req.params.id)
-    if(!productoEliminado){
-    return res.status(404).json({mensaje:"Producto no encontrado"})
-   }
+    const productoEliminado = await Producto.findByIdAndDelete(req.params.id);
+    if (!productoEliminado) {
+      return res.status(404).json({ mensaje: "Producto no encontrado" });
+    }
     //2- responder al front
-    res.status(200).json({mensaje:"Producto eliminado correctamente"})
-
+    res.status(200).json({ mensaje: "Producto eliminado correctamente" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: "Error al eliminar producto" });
-
   }
-}
+};
+export const editarProducto = async (req, res) => {
+  try {
+    //1- buscar al producto por id y luego borrar
+    const productoModificado = await Producto.findByIdAndUpdate(
+      req.params.id,
+      req.body
+    );
+    if (!productoModificado) {
+      return res.status(404).json({ mensaje: "Producto no encontrado" });
+    }
+    //2- responder al front
+    res.status(200).json({ mensaje: "Producto actualizado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error al actualizar producto" });
+  }
+};
 
 //agregar funcion para editar productos
