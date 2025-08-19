@@ -4,10 +4,17 @@
   "description": "backend de catalogo de productos de una cafeteria",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev":"node --env-file .env --watch index.js"
   },
   "keywords": [],
   "author": "Barrojo joaquin",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.17.0",
+    "morgan": "^1.10.1"
+  }
 }
