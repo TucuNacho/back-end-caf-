@@ -4,17 +4,6 @@ export const test = (req, res) => {
   res.send("Primera prueba desde el backend");
 };
 
-export const leerProducto = async (req, res) => {
-  try {
-    // buscar todos los productos en la base de datos
-    const listaProductos = await Producto.find();
-    // enviar la respuesta al front
-    res.status(200).json(listaProductos);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: "Error al leer los productos" });
-  }
-};
 //agregar funcion para crear productos
 export const crearProducto = async (req, res) => {
   try {
@@ -64,6 +53,7 @@ export const editarProducto = async (req, res) => {
     //1- buscar al producto por id y luego borrar
     const productoModificado = await Producto.findByIdAndUpdate(
       req.params.id,
+      //agregar funcion para editar productos
       req.body
     );
     if (!productoModificado) {
@@ -76,5 +66,14 @@ export const editarProducto = async (req, res) => {
     res.status(500).json({ mensaje: "Error al actualizar producto" });
   }
 };
-
-//agregar funcion para editar productos
+export const leerProducto = async (req, res) => {
+  try {
+    // buscar todos los productos en la base de datos
+    const listaProductos = await Producto.find();
+    // enviar la respuesta al front
+    res.status(200).json(listaProductos);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error al leer los productos" });
+  }
+};
