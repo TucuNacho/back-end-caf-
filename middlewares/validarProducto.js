@@ -20,7 +20,28 @@ const validacionProductos = [
         throw new Error("El precio debe estar entre 50 y 1000000");
       }
     }),
-    body("imagen").notEmpty().withMessage("La imagen es obligatoria").matches(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(\.(jpg|jpeg|png|webp))$/).withMessage("La url debe ser de formato jpg, jpeg, png y webp"),
+  body("imagen")
+    .notEmpty()
+    .withMessage("La imagen es obligatoria")
+    .matches(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/)
+    .withMessage("La url debe ser de formato jpg, jpeg, png y webp"),
+  body("categoria")
+    .notEmpty()
+    .withMessage("La categoria es un dato obligatorio")
+    .isIn(["Infusiones", "Batidos", "Dulces", "Salado"])
+    .withMessage(
+      "La categoria debe ser de las siguientes categorias: Infusiones, Batidos, Dulces, Salado"
+    ),
+  body("descripcion_breve")
+    .notEmpty()
+    .withMessage("La descripcion breve es obligatoria")
+    .isLength({ min: 5, max: 250 })
+    .withMessage("La descripcion breve debe tener entre 5 y 250 caracteres"),
+  body("descripcion_amplia")
+    .notEmpty()
+    .withMessage("La descripcion amplia es obligatoria")
+    .isLength({ min: 10, max: 500 })
+    .withMessage("La descripcion amplia debe tener entre 10 y 500 caracteres"),
   (req, res, next) => resultadoValidacion(req, res, next),
 ];
 
