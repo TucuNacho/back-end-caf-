@@ -1,0 +1,60 @@
+import resultadoValidacion from "./resultadoValidacion.js";
+import Producto from "../src/models/producto.js";
+
+import { body } from "express-validator";
+
+const validacionProductos = [
+  body("nombreProducto")
+    .notEmpty()
+    .withMessage("El nombre del producto es obligatorio")
+    .isLength({ min: 2, max: 100 })
+    .withMessage("El nombre del producto debe tener entre 2 y 100 caracteres")
+    .custom(async (valor, { req }) => {
+      const productoExistente = await Producto.findOne({
+        nombreProducto: valor,
+      });
+      // no existe ningun producto con el nombre "valor"
+      if (!productoExistente) return true;
+
+      //verificar si es un PUT chequear si el id del productoExistente es el mismo que el producto que estoy editando
+      if(req.params?.id && productoExistente._id.toString() === req.params.id) return true
+      throw new Error("Ya existe un producto con ese nombre");
+    }),
+  body("precio")
+    .notEmpty()
+    .withMessage("El precio es un dato obligatorio")
+    .isNumeric()
+    .withMessage("El precio debe ser un número")
+    .custom((valor) => {
+      if (valor >= 50 && valor <= 1000000) {
+        return true;
+      } else {
+        throw new Error("El precio debe estar entre 50 y 1000000");
+      }
+    }),
+  body("imagen")
+    .notEmpty()
+    .withMessage("La imagen es obligatoria")
+    .matches(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/)
+    .withMessage("La url debe ser de formato jpg, jpeg, png y webp"),
+  body("categoria")
+    .notEmpty()
+    .withMessage("La categoria es un dato obligatorio")
+    .isIn(["Infusiones", "Batidos", "Dulces", "Salado"])
+    .withMessage(
+      "La categoria debe ser de las siguientes categorias: Infusiones, Batidos, Dulces, Salado"
+    ),
+  body("descripcion_breve")
+    .notEmpty()
+    .withMessage("La descripcion breve es obligatoria")
+    .isLength({ min: 5, max: 250 })
+    .withMessage("La descripcion breve debe tener entre 5 y 250 caracteres"),
+  body("descripcion_amplia")
+    .notEmpty()
+    .withMessage("La descripcion amplia es obligatoria")
+    .isLength({ min: 10, max: 500 })
+    .withMessage("La descripcion amplia debe tener entre 10 y 500 caracteres"),
+  (req, res, next) => resultadoValidacion(req, res, next),
+];
+
+export default validacionProductos;
