@@ -1,8 +1,11 @@
 import Usuario from "../models/userName.js";
-
+import bcrypt from "bcrypt";
 export const crearUsuario = async (req, res) => {
   try {
-    const nuevoUser = new Usuario(req.body);
+    const {password} = req.body;
+    const saltos = bcrypt.genSaltSync(10)
+    const passwordHash = bcrypt.hashSync(password,saltos)
+    const nuevoUser = new Usuario({ Username:req.body.Username,mail:req.body.mail, password:passwordHash});
     await nuevoUser.save();
     res.status(201).json({ mensaje: "El usuario fue creado exitosamente" });
   } catch (error) {

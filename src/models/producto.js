@@ -3,25 +3,25 @@ import mongoose, { Schema } from "mongoose";
 const productoSchema = new Schema({
   nombreProducto: {
     type: String,
-    require: true,
+    required: true,
     minLength: 2,
     maxLength: 100,
     unique: true,
   },
   precio: {
     type: Number,
-    require: true,
+    required: true,
     min: 50,
     max: 1000000,
   },
   categoria: {
     type: String,
-    require: true,
+    required: true,
     enum: ["Infusiones", "Batidos", "Dulces", "Salado"],
   },
   imagen: {
     type: String,
-    require: true,
+    required: true,
     validate: {
       validator: (valor) => {
         return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(\.(jpg|jpeg|png|webp))$/.test(
@@ -32,7 +32,7 @@ const productoSchema = new Schema({
   },
   descripcion_breve: {
     type: String,
-    require: true,
+    required: true,
     minLength: 5,
     maxLength: 250,
   },

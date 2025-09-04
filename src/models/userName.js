@@ -1,17 +1,18 @@
 import mongoose, { Schema } from "mongoose";
 
 const userName = new Schema({
-  Userame: {
+  Username: {
     type: String,
-    require: true,
+    required: true,
     minLength: 3,
     maxLength: 50,
     unique: true,
   },
   password: {
     type: String,
-    requiere: true,
+    required: true,
     minLength: 8,
+    maxLength: 100,
     match: [
       /^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/,
       "La contraseña debe tener al menos una mayúscula, una minúscula, un número y un carácter especial",
@@ -19,14 +20,15 @@ const userName = new Schema({
   },
   mail: {
     type: String,
-    requiere: true,
+    required: true,
     unique: true,
-    lowercase: true,
-    trim: true,
-    match: [
-      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
-      "El email debe tener un formato valido, por ej: juanperez@mail.com",
-    ],
+    validate: {
+      validator: (valor) => {
+        return /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(
+          valor
+        );
+      },
+    },
   },
 });
 
